@@ -41,11 +41,11 @@ contract TokenShop {
 
     function tokenAmount(uint256 amountETH) public view returns (uint256) {
         //Sent amountETH, how many usd I have
-        uint256 ethUsd = uint256(getLatestPrice());
-        uint256 amountUSD = amountETH * ethUsd / 1000000000000000000; //ETH = 18 decimal places
-        uint256 amountToken = amountUSD / tokenPrice / 100;  //2 decimal places
+        uint256 ethUsd = uint256(getLatestPrice()); // precio con 8 decimales
+        uint256 amountUSD = amountETH * ethUsd / 1e18 / 1e8; // convertir a USD reales
+        uint256 amountToken = amountUSD * 100 / tokenPrice;  // aplicar decimales del token
         return amountToken;
-    } 
+    }
 
     receive() external payable {
         uint256 amountToken = tokenAmount(msg.value);
